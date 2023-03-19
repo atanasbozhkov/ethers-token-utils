@@ -23,6 +23,7 @@
     "ether",
     "erc20",
     "balance",
+    "allowance",
     "solidity"
   ],
   "scripts": {

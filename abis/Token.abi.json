@@ -1,20 +1,25 @@
 [
  {
-  "constant": true,
   "inputs": [
    {
-    "name": "",
+    "internalType": "address",
+    "name": "userAddr",
+    "type": "address"
+   },
+   {
+    "internalType": "address",
+    "name": "contractAddress",
     "type": "address"
    }
   ],
-  "name": "balanceOf",
+  "name": "allowance",
   "outputs": [
    {
+    "internalType": "uint256",
     "name": "",
     "type": "uint256"
    }
   ],
-  "payable": false,
   "stateMutability": "view",
   "type": "function"
  }
