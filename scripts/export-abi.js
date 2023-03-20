@@ -2,7 +2,7 @@ const { readdir, access, constants, mkdir, writeFile } = require("fs");
 const { resolve, join } = require("path");
 const { promisify } = require("util");
 const ROOT_DIR = `${__dirname}/..`;
-const ABI_DIR = resolve(ROOT_DIR, "abis");
+const ABI_DIR = resolve(ROOT_DIR, "src/abis");
 
 async function getAbis() {
   const readdirAsync = promisify(readdir);

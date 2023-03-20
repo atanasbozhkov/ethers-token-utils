@@ -24,9 +24,6 @@ function getAllowanceContract(provider: Provider | Signer, address?: string) {
       provider
   );
 }
-
-
-
 export async function getAddressBalances(
   provider: Provider | Signer,
   address: string,

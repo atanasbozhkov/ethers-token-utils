@@ -1,18 +1,14 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity ^0.4.24;
 
 // ERC20 contract interface
-abstract contract Token {
-    function allowance(address userAddr, address contractAddress) public virtual view returns (uint);
+contract Token {
+    function allowance(address userAddr, address contractAddress) public view returns (uint);
 }
 
 contract AllowanceChecker {
     /* Fallback function, don't accept any ETH */
-    fallback() external payable {
-        revert("AllowanceChecker does not accept payments");
-    }
-
-    receive() external payable {
+    function() public payable {
         revert("AllowanceChecker does not accept payments");
     }
 
@@ -26,17 +22,10 @@ contract AllowanceChecker {
     function tokenAllowance(address user, address token, address contractAddress) public view returns (uint) {
         // check if token is actually a contract
         uint256 tokenCode;
-        assembly { tokenCode := extcodesize(token) } // contract code size
-
-        // is it a contract
+        assembly {tokenCode := extcodesize(token)}
         if (tokenCode > 0) {
             // TODO: This seems safer than .call() - but what happens if the Token.allowances is not a valid method?
-            try Token(token).allowance(user, contractAddress) returns (uint allowance) {
-                return allowance;
-            }  catch {
-                revert("Could not find or call an .allowance method on the requested token address");
-            }
-
+        return Token(token).allowance(user, contractAddress);
         } else {
             return 0;
         }
@@ -53,16 +42,17 @@ contract AllowanceChecker {
       array is ordered by all of the 0th users token allowances, then the 1th
       user, and so on.
     */
-    function allowances(address[] memory users, address[] memory tokens, address contractAddr) external view returns (uint[] memory) {
+    function allowances(address[] users, address[] tokens, address contractAddr) external view returns (uint[] memory) {
         uint[] memory addrBalances = new uint[](tokens.length * users.length);
 
-        for(uint i = 0; i < users.length; i++) {
+        for (uint i = 0; i < users.length; i++) {
             for (uint j = 0; j < tokens.length; j++) {
                 uint addrIdx = j + tokens.length * i;
                 if (tokens[j] != address(0x0)) {
                     addrBalances[addrIdx] = tokenAllowance(users[i], tokens[j], contractAddr);
                 } else {
-                    addrBalances[addrIdx] = users[i].balance; // ETH allowance
+                    addrBalances[addrIdx] = users[i].balance;
+                    // ETH allowance
                 }
             }
         }
