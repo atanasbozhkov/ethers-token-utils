@@ -1,5 +1,5 @@
 // Built off of https://github.com/DeltaBalances/DeltaBalances.github.io/blob/master/smart_contract/deltabalances.sol
-pragma solidity ^0.4.21;
+pragma solidity ^0.4.24;
 
 // ERC20 contract interface
 contract Token {
